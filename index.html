@@ -6,7 +6,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	</head>
 	<body>
-		<input type="text" class="keyboardInput">
+		<input type="text" lang="pa" class="keyboardInput">
 		<button type="button" onclick="VKI_close();">Close Keyboard</button>
 		<script>
 			function addEvent( obj, type, fn )
@@ -72,7 +72,6 @@
 	   	76:[mapping[2][9][0],mapping[2][9][1]],
 	   	186:[mapping[2][10][0],mapping[2][10][1]],
 	   	222:[mapping[2][11][0],mapping[2][11][1]],
-	   	51:[mapping[1][13][0],mapping[1][13][1]],
 	   	90:[mapping[3][1][0],mapping[3][1][1]],
 	   	88:[mapping[3][2][0],mapping[3][2][1]],
 	   	67:[mapping[3][3][0],mapping[3][3][1]],
@@ -88,19 +87,40 @@
 	}
 	
 	function getKeyboardMap(e){
-	{
+		e = e || window.event;
+		var input = $('.keyboardInput');
+		var code = e.keyCode;
+		var key = keyboard_map()[e.keyCode];
+		if(code === 32){
+			// If spacebar is pressed
+			input.val(input.val()+' ');
+			return;
+		}
+		if(code === 8){
+			// If backspace is pressed
+			input.val(input.val().slice(0,-1));
+			return;
+		}
+		if(code === 16){
+			// If shift is pressed
+			VKI_modify('Shift');
+			return;
+		}
+		if(code === 20){
+			// If caps is pressed
+			VKI_modify('Caps');
+			return;
+		}
 		if(VKI_target){
-		e.preventDefault();
-		var keyboard_input = $('.keyboardInput');
-				if(keyboard_map()[e.keyCode] != undefined || ''){
-					if(VKI_shift || VKI_shiftlock){
-						keyboard_input.val(keyboard_input.val()+keyboard_map()[e.keyCode][1]);
-					} else {
-						keyboard_input.val(keyboard_input.val()+keyboard_map()[e.keyCode][0]);
-					}
+			e.preventDefault();
+			if(key != undefined || ''){
+				if(VKI_shift || VKI_shiftlock){
+					input.val(input.val()+key[1]);
+					return;
+				} else {
+					input.val(input.val()+key[0]);
+					return;
 				}
-			} else {
-				removeEvent(this, 'keydown', getKeyboardMap);
 			}
 		}
 	}
