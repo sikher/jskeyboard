@@ -106,12 +106,18 @@
 			}
 			if(code === 32){
 				// If spacebar is pressed
-				input.val(input.val()+' ');
+				return;
+			}
+			if(code === 35){
+				// If end is pressed
+				return;
+			}
+			if(code === 36){
+				// If home is pressed
 				return;
 			}
 			if(code === 8){
 				// If backspace is pressed
-				input.val(input.val().slice(0,-1));
 				return;
 			}
 			if(code === 16){
@@ -122,6 +128,16 @@
 			if(code === 20){
 				// If caps is pressed
 				VKI_modify('Caps');
+				return;
+			}
+			if(code === 0){
+				// If alt or altgr is pressed
+				VKI_modify('AltGr');
+				return;
+			}
+			if(code === 27){
+				// If esc is pressed
+				VKI_close();
 				return;
 			}
 			if(VKI_target){
